@@ -10,8 +10,8 @@ import javax.jcr.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -42,6 +42,7 @@ import org.springmodules.jcr.SessionHolder;
  * @author Costin Leau
  */
 public class OpenSessionInViewInterceptor extends HandlerInterceptorAdapter implements InitializingBean {
+	
 	/**
 	 * Suffix that gets appended to the SessionFactory toString
 	 * representation for the "participate in existing persistence manager
@@ -50,8 +51,8 @@ public class OpenSessionInViewInterceptor extends HandlerInterceptorAdapter impl
 	 * @see #getParticipateAttributeName
 	 */
 	public static final String PARTICIPATE_SUFFIX = ".PARTICIPATE";
-
-	protected final Log logger = LogFactory.getLog(getClass());
+	
+	private static final Logger log = LoggerFactory.getLogger(OpenSessionInViewInterceptor.class);
 
 	private SessionFactory sessionFactory;
 
@@ -84,7 +85,7 @@ public class OpenSessionInViewInterceptor extends HandlerInterceptorAdapter impl
 		}
 
 		else {
-			logger.debug("Opening JCR session in OpenSessionInViewInterceptor");
+			log.debug("Opening JCR session in OpenSessionInViewInterceptor");
 			Session s = SessionFactoryUtils.getSession(getSessionFactory(), true);
 			TransactionSynchronizationManager.bindResource(getSessionFactory(),
 					getSessionFactory().getSessionHolder(s));
@@ -110,7 +111,7 @@ public class OpenSessionInViewInterceptor extends HandlerInterceptorAdapter impl
 
 		else {
 			SessionHolder sesHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(getSessionFactory());
-			logger.debug("Closing JCR session in OpenSessionInViewInterceptor");
+			log.debug("Closing JCR session in OpenSessionInViewInterceptor");
 			SessionFactoryUtils.releaseSession(sesHolder.getSession(), getSessionFactory());
 		}
 	}

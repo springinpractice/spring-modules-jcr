@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -49,7 +51,10 @@ import org.springmodules.jcr.SessionFactoryUtils;
 public class OpenSessionInViewFilter extends OncePerRequestFilter {
 	public static final String DEFAULT_JCR_SESSION_FACTORY_FACTORY_BEAN_NAME = "sessionFactory";
 
+	private static final Logger log = LoggerFactory.getLogger(OpenSessionInViewFilter.class);
+	
 	private String SessionFactoryBeanName = DEFAULT_JCR_SESSION_FACTORY_FACTORY_BEAN_NAME;
+	
 
 	/**
 	 * Set the bean name of the SessionFactory to fetch from Spring's
@@ -79,12 +84,10 @@ public class OpenSessionInViewFilter extends OncePerRequestFilter {
 		boolean participate = false;
 
 		if (TransactionSynchronizationManager.hasResource(sf)) {
-			// Do not modify the Session: just set the participate
-			// flag.
+			// Do not modify the Session: just set the participate flag.
 			participate = true;
-		}
-		else {
-			logger.debug("Opening JCR session in OpenSessionInViewFilter");
+		} else {
+			log.debug("Opening JCR session in OpenSessionInViewFilter");
 			session = SessionFactoryUtils.getSession(sf, true);
 			TransactionSynchronizationManager.bindResource(sf, sf.getSessionHolder(session));
 		}
@@ -96,7 +99,7 @@ public class OpenSessionInViewFilter extends OncePerRequestFilter {
 		finally {
 			if (!participate) {
 				TransactionSynchronizationManager.unbindResource(sf);
-				logger.debug("Closing JCR session in OpenSessionInViewFilter");
+				log.debug("Closing JCR session in OpenSessionInViewFilter");
 				SessionFactoryUtils.releaseSession(session, sf);
 			}
 		}
@@ -125,11 +128,7 @@ public class OpenSessionInViewFilter extends OncePerRequestFilter {
 	 * @see #getSessionFactoryBeanName
 	 */
 	protected SessionFactory lookupSessionFactory() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Using session factory '"
-					+ getSessionFactoryBeanName()
-					+ "' for OpenSessionInViewFilter");
-		}
+		log.debug("Using session factory '{}' for OpenSessionInViewFilter", getSessionFactoryBeanName());
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		return (SessionFactory) wac.getBean(getSessionFactoryBeanName(), SessionFactory.class);
 	}

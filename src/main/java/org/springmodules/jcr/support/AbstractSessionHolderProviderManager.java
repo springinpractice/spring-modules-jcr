@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.jcr.Repository;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springmodules.jcr.SessionHolderProvider;
 import org.springmodules.jcr.SessionHolderProviderManager;
 
@@ -23,8 +23,7 @@ import org.springmodules.jcr.SessionHolderProviderManager;
  *
  */
 public abstract class AbstractSessionHolderProviderManager implements SessionHolderProviderManager {
-	
-	protected final Log log = LogFactory.getLog(getClass());
+	private static final Logger log = LoggerFactory.getLogger(AbstractSessionHolderProviderManager.class);
 	
 	protected SessionHolderProvider defaultProvider = new GenericSessionHolderProvider();
 	

@@ -21,9 +21,9 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 import org.springmodules.jcr.JcrCallback;
 import org.springmodules.jcr.JcrTemplate;
@@ -32,7 +32,7 @@ import org.springmodules.jcr.JcrTemplate;
  * @author Costin Leau
  * 
  */
-public class AcegiTests extends AbstractTransactionalSpringContextTests {
+public class SpringSecurityTests extends AbstractTransactionalSpringContextTests {
 
 	private JcrTemplate template;
 
