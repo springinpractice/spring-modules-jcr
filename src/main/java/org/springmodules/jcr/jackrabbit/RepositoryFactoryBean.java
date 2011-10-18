@@ -45,7 +45,7 @@ public class RepositoryFactoryBean extends org.springmodules.jcr.RepositoryFacto
 	private Resource homeDir;
 
 	/**
-	 * Repository configuratin created through Spring.
+	 * Repository configuration created through Spring.
 	 */
 	private RepositoryConfig repositoryConfig;
 

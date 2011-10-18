@@ -12,19 +12,18 @@ import org.springmodules.jcr.SessionFactory;
 import org.springmodules.jcr.SessionFactoryUtils;
 
 /**
- * Convenient class for accessing Jcr objects.
- * 
+ * Convenient class for accessing JCR objects.
  * 
  * @author Costin Leau
  * @author Guillaume Bort <guillaume.bort@zenexity.fr>
  */
 public abstract class JcrDaoSupport extends DaoSupport {
-
 	private JcrTemplate template;
 
 	/**
-	 * Set the JCR SessionFactory to be used by this DAO.
-	 * Will automatically create a JcrTemplate for the given SessionFactory.
+	 * Set the JCR SessionFactory to be used by this DAO. Will automatically create a JcrTemplate for the given
+	 * SessionFactory.
+	 * 
 	 * @see #createJcrTemplate
 	 * @see #setJcrTemplate
 	 */
@@ -33,15 +32,15 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	}
 
 	/**
-	 * Return the Jcr SessionFactory used by this DAO.
+	 * Return the JCR SessionFactory used by this DAO.
 	 */
 	public final SessionFactory getSessionFactory() {
 		return (template != null ? template.getSessionFactory() : null);
 	}
 
 	/**
-	 * Set the JcrTemplate for this DAO explicitly,
-	 * as an alternative to specifying a SessionFactory.
+	 * Set the JcrTemplate for this DAO explicitly, as an alternative to specifying a SessionFactory.
+	 * 
 	 * @see #setSessionFactory
 	 */
 	public final void setTemplate(JcrTemplate jcrTemplate) {
@@ -49,8 +48,7 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	}
 
 	/**
-	 * Return the JcrTemplate for this DAO, pre-initialized
-	 * with the SessionFactory or set explicitly.
+	 * Return the JcrTemplate for this DAO, pre-initialized with the SessionFactory or set explicitly.
 	 */
 	public final JcrTemplate getTemplate() {
 		return template;
@@ -61,9 +59,9 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	}
 
 	/**
-	 * Get a JCR Session, either from the current transaction or
-	 * a new one. The latter is only allowed if the "allowCreate" setting
-	 * of this bean's JcrTemplate is true.
+	 * Get a JCR Session, either from the current transaction or a new one. The latter is only allowed if the
+	 * "allowCreate" setting of this bean's JcrTemplate is true.
+	 * 
 	 * @return the JCR Session
 	 * @throws DataAccessResourceFailureException if the Session couldn't be created
 	 * @throws IllegalStateException if no thread-bound Session found and allowCreate false
@@ -74,24 +72,30 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	}
 
 	/**
-	 * Get a JCR Session, either from the current transaction or
-	 * a new one. The latter is only allowed if "allowCreate" is true.
-	 * @param allowCreate if a non-transactional Session should be created
-	 * when no transactional Session can be found for the current thread
+	 * Get a JCR Session, either from the current transaction or a new one. The latter is only allowed if "allowCreate"
+	 * is true.
+	 * 
+	 * @param allowCreate
+	 *            if a non-transactional Session should be created when no transactional Session can be found for the
+	 *            current thread
 	 * @return the JCR Session
-	 * @throws DataAccessResourceFailureException if the Session couldn't be created
-	 * @throws IllegalStateException if no thread-bound Session found and allowCreate false
+	 * @throws DataAccessResourceFailureException
+	 *             if the Session couldn't be created
+	 * @throws IllegalStateException
+	 *             if no thread-bound Session found and allowCreate false
 	 * @see org.springmodules.jcr.SessionFactoryUtils#getSession
 	 */
-	protected final Session getSession(boolean allowCreate) throws DataAccessResourceFailureException,
-			IllegalStateException {
+	protected final Session getSession(boolean allowCreate)
+			throws DataAccessResourceFailureException, IllegalStateException {
+		
 		return SessionFactoryUtils.getSession(getSessionFactory(), allowCreate);
 	}
 
 	/**
-	 * Convert the given JCRException to an appropriate exception from the
-	 * org.springframework.dao hierarchy.
+	 * Convert the given JCRException to an appropriate exception from the org.springframework.dao hierarchy.
+	 * 
 	 * <p>Delegates to the convertJCRAccessException method of this DAO's JCRTemplate.
+	 * 
 	 * @param ex JCRException that occured
 	 * @return the corresponding DataAccessException instance
 	 * @see #setJCRTemplate
