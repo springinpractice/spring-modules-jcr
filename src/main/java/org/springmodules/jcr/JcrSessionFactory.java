@@ -455,6 +455,16 @@ public class JcrSessionFactory implements InitializingBean, DisposableBean, Sess
 	public void setKeepNewNamespaces(boolean keepNamespaces) {
 		this.keepNewNamespaces = keepNamespaces;
 	}
+	
+	/**
+	 * Simply calls {{@link #setKeepNewNamespaces(boolean)}. Spring/Eclipse was complaining that there's no
+	 * setKeepNamespaces method behind the <jcr:sessionFactory> configuration, so that's why I'm adding it here.
+	 * 
+	 * @param keepNamespaces
+	 */
+	public void setKeepNamespaces(boolean keepNamespaces) {
+		setKeepNewNamespaces(keepNamespaces);
+	}
 
 	/**
 	 * Indicate if the given namespace registrations will override the namespace
