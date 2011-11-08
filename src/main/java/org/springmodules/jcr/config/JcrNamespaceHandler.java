@@ -71,7 +71,6 @@ public class JcrNamespaceHandler extends NamespaceHandlerSupport {
 		 */
 		@Override
 		protected void postProcess(BeanDefinitionBuilder definitionBuilder, Element element) {
-			NodeList childNodes = element.getChildNodes();
 			List<Element> eventTypes = DomUtils.getChildElementsByTagName(element, EVENT_TYPE);
 			if (eventTypes != null && eventTypes.size() > 0) {
 				// compute event type
