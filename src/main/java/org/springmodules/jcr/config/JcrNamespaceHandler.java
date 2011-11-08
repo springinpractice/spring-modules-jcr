@@ -32,80 +32,80 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * NamespaceHandler for JCR tags.
+ * NamespaceHandler for elements in the jcr namespace.
  * 
  * @author Costin Leau
  * @author Willie Wheeler
  */
 public class JcrNamespaceHandler extends NamespaceHandlerSupport {
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	
+	/* (non-Javadoc)
 	 * @see org.springframework.beans.factory.xml.NamespaceHandler#init()
 	 */
+	@Override
 	public void init() {
-		// registerBeanDefinitionParser("repository", new
-		// JcrBeanDefinitionParser());
 		registerBeanDefinitionParser("eventListenerDefinition", new JcrEventListenerBeanDefinitionParser());
 		registerBeanDefinitionParser("sessionFactory", new JcrSessionFactoryBeanDefinitionParser());
 	}
 
+	/**
+	 * Parses the &lt;jcr:eventListenerDefinition&gt; configuration element.
+	 */
 	private class JcrEventListenerBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
 		public static final String EVENT_TYPE = "eventType";
-
 		public static final String NODE_TYPE_NAME = "nodeTypeName";
-
 		public static final String UUID = "uuid";
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass(org.w3c.dom.Element)
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass
+		 * (org.w3c.dom.Element)
 		 */
-		protected Class getBeanClass(Element element) {
+		@Override
+		protected Class<?> getBeanClass(Element element) {
 			return EventListenerDefinition.class;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser#postProcess(org.springframework.beans.factory.support.BeanDefinitionBuilder,
-		 *      org.w3c.dom.Element)
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser#postProcess
+		 * (org.springframework.beans.factory.support.BeanDefinitionBuilder, org.w3c.dom.Element)
 		 */
+		@Override
 		protected void postProcess(BeanDefinitionBuilder definitionBuilder, Element element) {
 			NodeList childNodes = element.getChildNodes();
-			List eventTypes = DomUtils.getChildElementsByTagName(element, EVENT_TYPE);
+			List<Element> eventTypes = DomUtils.getChildElementsByTagName(element, EVENT_TYPE);
 			if (eventTypes != null && eventTypes.size() > 0) {
 				// compute event type
 				int eventType = 0;
 				Constants types = new Constants(Event.class);
-				for (Iterator iter = eventTypes.iterator(); iter.hasNext();) {
-					Element evenTypeElement = (Element) iter.next();
+				for (Iterator<Element> iter = eventTypes.iterator(); iter.hasNext();) {
+					Element evenTypeElement = iter.next();
 					eventType |= types.asNumber(DomUtils.getTextValue(evenTypeElement)).intValue();
 				}
 				definitionBuilder.addPropertyValue(EVENT_TYPE, new Integer(eventType));
 			}
 
-			List nodeTypeNames = DomUtils.getChildElementsByTagName(element, NODE_TYPE_NAME);
+			List<Element> nodeTypeNames = DomUtils.getChildElementsByTagName(element, NODE_TYPE_NAME);
 			String[] nodeTypeValues = new String[nodeTypeNames.size()];
 
 			for (int i = 0; i < nodeTypeValues.length; i++) {
-				nodeTypeValues[i] = DomUtils.getTextValue((Element) nodeTypeNames.get(i));
+				nodeTypeValues[i] = DomUtils.getTextValue(nodeTypeNames.get(i));
 			}
 			definitionBuilder.addPropertyValue(NODE_TYPE_NAME, nodeTypeValues);
-			List uuids = DomUtils.getChildElementsByTagName(element, UUID);
+			List<Element> uuids = DomUtils.getChildElementsByTagName(element, UUID);
 
 			String[] uuidsValues = new String[uuids.size()];
 
 			for (int i = 0; i < uuidsValues.length; i++) {
-				uuidsValues[i] = DomUtils.getTextValue((Element) uuids.get(i));
+				uuidsValues[i] = DomUtils.getTextValue(uuids.get(i));
 			}
 
 			definitionBuilder.addPropertyValue(UUID, uuidsValues);
 		}
 	}
 
+	/**
+	 * Parses the &lt;jcr:sessionFactory&gt; configuration element.
+	 */
 	private class JcrSessionFactoryBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 		
 		/* (non-Javadoc)

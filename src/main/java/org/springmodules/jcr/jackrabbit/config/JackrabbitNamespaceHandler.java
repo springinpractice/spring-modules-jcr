@@ -36,10 +36,15 @@ public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
 	 */
 	@Override
 	public void init() {
-		registerBeanDefinitionParser("repository", new JackrabbitRepositoryBeanDefinitionParser());
-		registerBeanDefinitionParser("transaction-manager", new JackrabbitLocalTransactionManagerBeanDefinitionParser());
+		registerBeanDefinitionParser("repository",
+				new JackrabbitRepositoryBeanDefinitionParser());
+		registerBeanDefinitionParser("transaction-manager",
+				new JackrabbitLocalTransactionManagerBeanDefinitionParser());
 	}
 
+	/**
+	 * Parses the &lt;jackrabbit:repository&gt; configuration element.
+	 */
 	private static class JackrabbitRepositoryBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
 		
 		/* (non-Javadoc)
@@ -52,6 +57,9 @@ public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
 		}
 	}
 	
+	/**
+	 * Parses the &lt;jackrabbit:transaction-manager&gt; configuration element.
+	 */
 	private static class JackrabbitLocalTransactionManagerBeanDefinitionParser
 			extends AbstractSingleBeanDefinitionParser {
 		
