@@ -15,41 +15,62 @@
  */
 package org.springmodules.jcr.jackrabbit.config;
 
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser;
+import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 import org.springmodules.jcr.jackrabbit.LocalTransactionManager;
 import org.springmodules.jcr.jackrabbit.RepositoryFactoryBean;
 import org.w3c.dom.Element;
 
 /**
- * Jackrabbit specifc namespace handler.
+ * Jackrabbit-specifc namespace handler.
  * 
  * @author Costin Leau
- * 
+ * @author Willie Wheeler
  */
 public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	
+	/* (non-Javadoc)
 	 * @see org.springframework.beans.factory.xml.NamespaceHandler#init()
 	 */
+	@Override
 	public void init() {
 		registerBeanDefinitionParser("repository", new JackrabbitRepositoryBeanDefinitionParser());
 		registerBeanDefinitionParser("transaction-manager", new JackrabbitLocalTransactionManagerBeanDefinitionParser());
 	}
 
 	private static class JackrabbitRepositoryBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
-
-		protected Class getBeanClass(Element element) {
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass
+		 * (org.w3c.dom.Element)
+		 */
+		@Override
+		protected Class<?> getBeanClass(Element element) {
 			return RepositoryFactoryBean.class;
 		}
 	}
 	
-	private static class JackrabbitLocalTransactionManagerBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
-
-		protected Class getBeanClass(Element element) {
+	private static class JackrabbitLocalTransactionManagerBeanDefinitionParser
+			extends AbstractSingleBeanDefinitionParser {
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass
+		 * (org.w3c.dom.Element)
+		 */
+		@Override
+		protected Class<?> getBeanClass(Element element) {
 			return LocalTransactionManager.class;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#doParse(org.w3c.dom.Element,
+		 * org.springframework.beans.factory.support.BeanDefinitionBuilder)
+		 */
+		@Override
+		protected void doParse(Element elem, BeanDefinitionBuilder builder) {
+			builder.addPropertyReference("sessionFactory", elem.getAttribute("sessionFactory"));
 		}
 	}
 

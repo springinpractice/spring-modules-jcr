@@ -22,6 +22,7 @@ import javax.jcr.observation.Event;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser;
+import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 import org.springframework.core.Constants;
 import org.springframework.util.xml.DomUtils;
@@ -31,10 +32,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
- * NamespaceHandler for Jcr tags.
+ * NamespaceHandler for JCR tags.
  * 
  * @author Costin Leau
- * 
+ * @author Willie Wheeler
  */
 public class JcrNamespaceHandler extends NamespaceHandlerSupport {
 
@@ -105,14 +106,24 @@ public class JcrNamespaceHandler extends NamespaceHandlerSupport {
 		}
 	}
 
-	private class JcrSessionFactoryBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass(org.w3c.dom.Element)
+	private class JcrSessionFactoryBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass
+		 * (org.w3c.dom.Element)
 		 */
-		protected Class getBeanClass(Element element) {
+		@Override
+		protected Class<?> getBeanClass(Element element) {
 			return JcrSessionFactory.class;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#doParse(org.w3c.dom.Element,
+		 * org.springframework.beans.factory.support.BeanDefinitionBuilder)
+		 */
+		@Override
+		protected void doParse(Element elem, BeanDefinitionBuilder builder) {
+			builder.addPropertyReference("repository", elem.getAttribute("repository"));
 		}
 	}
 }
