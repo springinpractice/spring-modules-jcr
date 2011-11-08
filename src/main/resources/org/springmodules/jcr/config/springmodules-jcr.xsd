@@ -6,12 +6,12 @@
 	targetNamespace="http://springmodules.dev.java.net/schema/jcr"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-	<xsd:import namespace="http://www.springframework.org/schema/beans"
-     schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
+	<xsd:import
+		namespace="http://www.springframework.org/schema/beans"
+		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
     
 	<xsd:complexType name="repository" abstract="true">
-		<xsd:attribute name="configuration" type="xsd:string"
-			use="required" />
+		<xsd:attribute name="configuration" type="xsd:string" use="required" />
 		<xsd:attribute name="id" type="xsd:ID" use="required" />
 	</xsd:complexType>
 
@@ -52,14 +52,13 @@
 			<xsd:sequence>
 				<xsd:element name="namespace" minOccurs="0" maxOccurs="unbounded">
 					<xsd:complexType mixed="true"> 
-						<xsd:attribute name="name" type="xsd:string" use="required"/>
+						<xsd:attribute name="name" type="xsd:string" use="required" />
 					</xsd:complexType>
 				</xsd:element>
 			</xsd:sequence>
 			<xsd:attribute name="id" type="xsd:ID" use="required" />
 			<xsd:attribute name="repository" type="xsd:string" use="required" />
-			<xsd:attribute name="keepNamespaces" type="xsd:boolean" default="false"/>
+			<xsd:attribute name="keepNamespaces" type="xsd:boolean" default="false" />
 		</xsd:complexType>
 	</xsd:element>	
-	
 </xsd:schema>

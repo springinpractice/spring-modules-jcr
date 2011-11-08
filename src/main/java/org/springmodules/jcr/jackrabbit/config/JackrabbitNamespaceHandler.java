@@ -16,7 +16,6 @@
 package org.springmodules.jcr.jackrabbit.config;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 import org.springmodules.jcr.jackrabbit.LocalTransactionManager;
@@ -45,7 +44,7 @@ public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
 	/**
 	 * Parses the &lt;jackrabbit:repository&gt; configuration element.
 	 */
-	private static class JackrabbitRepositoryBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
+	private static class JackrabbitRepositoryBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 		
 		/* (non-Javadoc)
 		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#getBeanClass
@@ -54,6 +53,30 @@ public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
 		@Override
 		protected Class<?> getBeanClass(Element element) {
 			return RepositoryFactoryBean.class;
+		}
+		
+		/* (non-Javadoc)
+		 * @see org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#doParse(org.w3c.dom.Element,
+		 * org.springframework.beans.factory.support.BeanDefinitionBuilder)
+		 */
+		@Override
+		protected void doParse(Element elem, BeanDefinitionBuilder builder) {
+			String configuration = elem.getAttribute("configuration");
+			if (!configuration.isEmpty()) {
+				builder.addPropertyValue("configuration", configuration);
+			} else {
+				throw new NullPointerException("<jackrabbit:repository> must define configuration");
+			}
+			
+			String homeDir = elem.getAttribute("homeDir");
+			if (!homeDir.isEmpty()) {
+				builder.addPropertyValue("homeDir", homeDir);
+			}
+			
+			String value = elem.getAttribute("repositoryConfig");
+			if (!value.isEmpty()) {
+				builder.addPropertyReference("repositoryConfig", value);
+			}
 		}
 	}
 	
@@ -78,7 +101,12 @@ public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
 		 */
 		@Override
 		protected void doParse(Element elem, BeanDefinitionBuilder builder) {
-			builder.addPropertyReference("sessionFactory", elem.getAttribute("sessionFactory"));
+			String sessionFactory = elem.getAttribute("sessionFactory");
+			if (!sessionFactory.isEmpty()) {
+				builder.addPropertyReference("sessionFactory", sessionFactory);
+			} else {
+				throw new NullPointerException("<jackrabbit:repository> must define sessionFactory");
+			}
 		}
 	}
 

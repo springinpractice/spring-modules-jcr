@@ -121,7 +121,17 @@ public class JcrNamespaceHandler extends NamespaceHandlerSupport {
 		 */
 		@Override
 		protected void doParse(Element elem, BeanDefinitionBuilder builder) {
-			builder.addPropertyReference("repository", elem.getAttribute("repository"));
+			String repository = elem.getAttribute("repository");
+			if (!repository.isEmpty()) {
+				builder.addPropertyReference("repository", repository);
+			} else {
+				throw new NullPointerException("<jcr:sessionFactory> must define repository");
+			}
+			
+			String keepNamespaces = elem.getAttribute("keepNamespaces");
+			if (!keepNamespaces.isEmpty()) {
+				builder.addPropertyValue("keepNamespaces", keepNamespaces);
+			}
 		}
 	}
 }
