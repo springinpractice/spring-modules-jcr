@@ -29,7 +29,6 @@ import org.springframework.util.xml.DomUtils;
 import org.springmodules.jcr.EventListenerDefinition;
 import org.springmodules.jcr.JcrSessionFactory;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * NamespaceHandler for elements in the jcr namespace.
