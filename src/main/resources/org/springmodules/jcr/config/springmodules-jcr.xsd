@@ -36,7 +36,7 @@
 						<xsd:selector xpath="eventType"/>
 						<xsd:field xpath="eventType"/>
 					</xsd:unique>
-					 -->
+					-->
 				</xsd:element>
 			</xsd:sequence>
 			
@@ -59,6 +59,7 @@
 			<xsd:attribute name="id" type="xsd:ID" use="required" />
 			<xsd:attribute name="repository" type="xsd:string" use="required" />
 			<xsd:attribute name="keepNamespaces" type="xsd:boolean" default="false" />
+			<xsd:attribute name="credentials" type="xsd:string" />
 		</xsd:complexType>
 	</xsd:element>	
 </xsd:schema>

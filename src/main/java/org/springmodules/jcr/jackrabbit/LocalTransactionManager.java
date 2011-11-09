@@ -51,15 +51,7 @@ import org.springmodules.jcr.jackrabbit.support.UserTxSessionHolder;
  * 
  */
 public class LocalTransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
-
     private SessionFactory sessionFactory;
-
-    /**
-     * @return Returns the sessionFactory.
-     */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
 
     /**
      * Create a new JcrTransactionManager instance.
@@ -75,6 +67,21 @@ public class LocalTransactionManager extends AbstractPlatformTransactionManager 
      *            Repository to manage transactions for
      */
     public LocalTransactionManager(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    /**
+     * @return Returns the sessionFactory.
+     */
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    /**
+     * @param sessionFactory
+     *            The sessionFactory to set.
+     */
+    public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -255,9 +262,7 @@ public class LocalTransactionManager extends AbstractPlatformTransactionManager 
      * 
      */
     private static class JcrTransactionObject implements SmartTransactionObject {
-
         private UserTxSessionHolder sessionHolder;
-
         private boolean newSessionHolder;
 
         public void setSessionHolder(UserTxSessionHolder sessionHolder, boolean newSessionHolder) {
@@ -304,13 +309,5 @@ public class LocalTransactionManager extends AbstractPlatformTransactionManager 
         private SessionHolder getSessionHolder() {
             return sessionHolder;
         }
-    }
-
-    /**
-     * @param sessionFactory
-     *            The sessionFactory to set.
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
     }
 }

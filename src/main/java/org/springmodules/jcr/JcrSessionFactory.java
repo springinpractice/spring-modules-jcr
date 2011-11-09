@@ -51,25 +51,16 @@ import org.springmodules.jcr.support.GenericSessionHolderProvider;
  * 
  */
 public class JcrSessionFactory implements InitializingBean, DisposableBean, SessionFactory {
-
 	private static final Log log = LogFactory.getLog(JcrSessionFactory.class);
 
 	private Repository repository;
-
 	private String workspaceName;
-
 	private Credentials credentials;
-
 	private EventListenerDefinition eventListeners[] = new EventListenerDefinition[] {};
-
 	private Properties namespaces;
-
 	private Map overwrittenNamespaces;
-
 	private boolean forceNamespacesRegistration = false;
-
 	private boolean keepNewNamespaces = true;
-
 	private boolean skipExistingNamespaces = true;
 
 	/**
@@ -81,6 +72,12 @@ public class JcrSessionFactory implements InitializingBean, DisposableBean, Sess
 	 * session holder provider - determined and used internally.
 	 */
 	private SessionHolderProvider sessionHolderProvider;
+
+	/**
+	 * Empty constructor.
+	 */
+	public JcrSessionFactory() {
+	}
 
 	/**
 	 * Constructor with all the required fields.
@@ -103,6 +100,7 @@ public class JcrSessionFactory implements InitializingBean, DisposableBean, Sess
 	 */
 	public JcrSessionFactory(Repository repository, String workspaceName, Credentials credentials,
 			SessionHolderProviderManager sessionHolderProviderManager) {
+		
 		this.repository = repository;
 		this.workspaceName = workspaceName;
 		this.credentials = credentials;
@@ -110,9 +108,31 @@ public class JcrSessionFactory implements InitializingBean, DisposableBean, Sess
 	}
 
 	/**
-	 * Empty constructor.
+	 * @return Returns the repository.
 	 */
-	public JcrSessionFactory() {
+	public Repository getRepository() {
+		return repository;
+	}
+
+	/**
+	 * @param repository The repository to set.
+	 */
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+
+	/**
+	 * @param workspaceName The workspaceName to set.
+	 */
+	public void setWorkspaceName(String workspaceName) {
+		this.workspaceName = workspaceName;
+	}
+
+	/**
+	 * @param credentials The credentials to set.
+	 */
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
 	}
 
 	public void afterPropertiesSet() throws Exception {
@@ -295,34 +315,6 @@ public class JcrSessionFactory implements InitializingBean, DisposableBean, Sess
 			}
 		}
 		return session;
-	}
-
-	/**
-	 * @return Returns the repository.
-	 */
-	public Repository getRepository() {
-		return repository;
-	}
-
-	/**
-	 * @param repository The repository to set.
-	 */
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
-
-	/**
-	 * @param workspaceName The workspaceName to set.
-	 */
-	public void setWorkspaceName(String workspaceName) {
-		this.workspaceName = workspaceName;
-	}
-
-	/**
-	 * @param credentials The credentials to set.
-	 */
-	public void setCredentials(Credentials credentials) {
-		this.credentials = credentials;
 	}
 
 	/**

@@ -128,6 +128,11 @@ public class JcrNamespaceHandler extends NamespaceHandlerSupport {
 				throw new NullPointerException("<jcr:sessionFactory> must define repository");
 			}
 			
+			String credentials = elem.getAttribute("credentials");
+			if (!credentials.isEmpty()) {
+				builder.addPropertyReference("credentials", credentials);
+			}
+			
 			String keepNamespaces = elem.getAttribute("keepNamespaces");
 			if (!keepNamespaces.isEmpty()) {
 				builder.addPropertyValue("keepNamespaces", keepNamespaces);
