@@ -15,9 +15,11 @@
  */
 package org.springmodules.jcr.jackrabbit.config;
 
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+import org.springframework.beans.factory.xml.ParserContext;
 import org.springmodules.jcr.jackrabbit.LocalTransactionManager;
 import org.springmodules.jcr.jackrabbit.RepositoryFactoryBean;
 import org.w3c.dom.Element;
@@ -107,6 +109,11 @@ public class JackrabbitNamespaceHandler extends NamespaceHandlerSupport {
 			} else {
 				throw new NullPointerException("<jackrabbit:repository> must define sessionFactory");
 			}
+		}
+		
+		@Override
+		protected String resolveId(Element element, AbstractBeanDefinition definition, ParserContext parserContext) {
+			return "transactionManager";
 		}
 	}
 
