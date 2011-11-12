@@ -21,21 +21,28 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	private JcrTemplate template;
 
 	/**
+	 * Return the JCR SessionFactory used by this DAO.
+	 */
+	public SessionFactory getSessionFactory() {
+		return (template != null ? template.getSessionFactory() : null);
+	}
+
+	/**
 	 * Set the JCR SessionFactory to be used by this DAO. Will automatically create a JcrTemplate for the given
 	 * SessionFactory.
 	 * 
 	 * @see #createJcrTemplate
 	 * @see #setJcrTemplate
 	 */
-	public final void setSessionFactory(SessionFactory sessionFactory) {
+	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.template = new JcrTemplate(sessionFactory);
 	}
 
 	/**
-	 * Return the JCR SessionFactory used by this DAO.
+	 * Return the JcrTemplate for this DAO, pre-initialized with the SessionFactory or set explicitly.
 	 */
-	public final SessionFactory getSessionFactory() {
-		return (template != null ? template.getSessionFactory() : null);
+	public JcrTemplate getTemplate() {
+		return template;
 	}
 
 	/**
@@ -43,15 +50,8 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	 * 
 	 * @see #setSessionFactory
 	 */
-	public final void setTemplate(JcrTemplate jcrTemplate) {
+	public void setTemplate(JcrTemplate jcrTemplate) {
 		this.template = jcrTemplate;
-	}
-
-	/**
-	 * Return the JcrTemplate for this DAO, pre-initialized with the SessionFactory or set explicitly.
-	 */
-	public final JcrTemplate getTemplate() {
-		return template;
 	}
 
 	protected final void checkDaoConfig() {
