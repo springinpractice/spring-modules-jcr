@@ -26,7 +26,11 @@
 
 	<xsd:element name="transaction-manager">
 		<xsd:complexType>
-			<xsd:attribute name="id" type="xsd:ID" use="required" />
+		
+			<!-- Defaults to "transactionManager" if not provided. See parser class. -->
+<!-- 			<xsd:attribute name="id" type="xsd:ID" use="required" /> -->
+			<xsd:attribute name="id" type="xsd:ID" />
+			
 			<xsd:attribute name="sessionFactory" type="xsd:string" use="required" />
 		</xsd:complexType>
 	</xsd:element>
