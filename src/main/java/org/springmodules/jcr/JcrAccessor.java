@@ -29,10 +29,22 @@ import org.springframework.dao.DataAccessException;
  * @author Costin Leau
  */
 public abstract class JcrAccessor implements InitializingBean {
-
 	protected final Log logger = LogFactory.getLog(getClass());
-
 	private SessionFactory sessionFactory;
+	
+	/**
+	 * @return Returns the sessionFactory.
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	/**
+	 * @param sessionFactory The sessionFactory to set.
+	 */
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	/**
 	 * Eagerly initialize the session holder provider, creating a default one
@@ -83,18 +95,5 @@ public abstract class JcrAccessor implements InitializingBean {
 	 */
 	public RuntimeException convertJcrAccessException(RuntimeException ex) {
 		return ex;
-	}
-	/**
-	 * @return Returns the sessionFactory.
-	 */
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	/**
-	 * @param sessionFactory The sessionFactory to set.
-	 */
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
 	}
 }

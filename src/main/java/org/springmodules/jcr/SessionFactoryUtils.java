@@ -144,8 +144,8 @@ public abstract class SessionFactoryUtils {
 	}
 
 	/**
-	 * Close the given Session, created via the given repository, if it is not
-	 * managed externally (i.e. not bound to the thread).
+	 * Close the given Session (i.e., log out), created via the given repository, if it is not managed externally
+	 * (i.e. not bound to the thread).
 	 * 
 	 * @param session
 	 *            the Jcr Session to close
@@ -154,9 +154,8 @@ public abstract class SessionFactoryUtils {
 	 *            null)
 	 */
 	public static void releaseSession(Session session, SessionFactory sessionFactory) {
-		if (session == null) {
-			return;
-		}
+		if (session == null) { return; }
+		
 		// Only close non thread bound Sessions.
 		if (!isSessionThreadBound(session, sessionFactory)) {
 			logger.debug("Closing JCR Session");
@@ -251,11 +250,8 @@ public abstract class SessionFactoryUtils {
 	 * @see org.springframework.transaction.jta.JtaTransactionManager
 	 */
 	private static class JcrSessionSynchronization extends TransactionSynchronizationAdapter {
-
 		private final SessionHolder sessionHolder;
-
 		private final SessionFactory sessionFactory;
-
 		private boolean holderActive = true;
 
 		/**

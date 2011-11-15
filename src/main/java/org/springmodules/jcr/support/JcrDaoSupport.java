@@ -3,6 +3,8 @@ package org.springmodules.jcr.support;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.support.DaoSupport;
@@ -18,6 +20,8 @@ import org.springmodules.jcr.SessionFactoryUtils;
  * @author Guillaume Bort <guillaume.bort@zenexity.fr>
  */
 public abstract class JcrDaoSupport extends DaoSupport {
+	private static Logger log = LoggerFactory.getLogger(JcrDaoSupport.class);
+	
 	private JcrTemplate template;
 
 	/**
@@ -88,6 +92,7 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	protected final Session getSession(boolean allowCreate)
 			throws DataAccessResourceFailureException, IllegalStateException {
 		
+		log.debug("Getting session");
 		return SessionFactoryUtils.getSession(getSessionFactory(), allowCreate);
 	}
 
@@ -104,7 +109,21 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	protected final DataAccessException convertJcrAccessException(RepositoryException ex) {
 		return this.template.convertJcrAccessException(ex);
 	}
-
+	
+	/**
+	 * Indicates whether the given JCR Session is thread-bound; i.e., bound to
+	 * the current thread by Spring's transaction facilities (which is used as a
+	 * thread-binding utility class).
+	 * 
+	 * @param session
+	 *            session
+	 * @return boolean indicating whether the session is bound to the thread
+	 *         (and hence part of an existing transaction)
+	 */
+	protected final boolean isSessionThreadBound(Session session) {
+		return SessionFactoryUtils.isSessionThreadBound(session, getSessionFactory());
+	}
+	
 	/**
 	 * Close the given JCR Session, created via this DAO's
 	 * SessionFactory, if it isn't bound to the thread.
@@ -112,6 +131,7 @@ public abstract class JcrDaoSupport extends DaoSupport {
 	 * @see org.springframework.orm.JCR.SessionFactoryUtils#releaseSession
 	 */
 	protected final void releaseSession(Session session) {
+		log.debug("Releasing session");
 		SessionFactoryUtils.releaseSession(session, getSessionFactory());
 	}
 
