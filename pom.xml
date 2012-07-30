@@ -149,4 +149,30 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<pluginManagement>
+			<plugins>				
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+					
+						<!-- Note: Moved these out of compilerArguments -->
+						<source>1.6</source>
+						<target>1.6</target>
+						
+						<compilerArguments>
+							<verbose />
+						</compilerArguments>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
